@@ -14,39 +14,65 @@ LP1:  ST    0(r1), r2
       NOP
       NOP
       NOP
-# Part 2: 奇数kだけ調べる
-      LI    r4,1        # 素数の数 2を先に数える
-      LI    r6,3        # k = 3
-      LI    r7,0        # 0
-DOWH:
+# Part 2: 合成数を消す
+      LI    r4, 0        # 素数カウントは後で行う
+      LI    r6, 3        # k=3
+      LI    r7, 0        # 0
 
-      MLT   r1, r6, r6  # i = k*k
-      SGT   r5, r1, r0  # k*k > n ?
-      BNZ   r5, HLT:    # 超えたら終了
-      NOP
-      NOP
-      NOP
-      LD    r5,0(r6)    # s[k]
-      BZ    r5,ENDIF:   # s[k] == 0なら飛ばす
-      NOP
-      NOP
-      NOP
-      ADD   r4,r4,r2    # 素数数++
-LP2:  ST    0(r1),r7    # s[j] = 0
-      ADD   r5,r6,r6    # r5 = 2k
-      ADD   r1,r1,r5    # i += 2k
+DOWH:
+      MLT   r1,r6,r6
       SGT   r5,r1,r0
-      BZ    r5,LP2:
+      BNZ   r5,COUNT:    # 篩が終わったら数える処理へ
       NOP
       NOP
       NOP
+
+      LD    r5,0(r6)
+      BZ    r5,ENDIF:
+      NOP
+      NOP
+      NOP
+
+LP2:  ST    (r1), r7
+      ADD   r5,r6,r6     # r5 = 2k
+      ADD   r1,r1,r5     # j += 2k
+      SGT   r5,r1,r0
+      BZ    r5, LP2:
+      NOP
+      NOP
+      NOP
+
 ENDIF:
-      ADD   r6,r6,r2
-      ADD   r6,r6,r2    # k += 2
+      LI    r5,2
+      ADD   r6,r6,r5
       B     DOWH:
       NOP
       NOP
       NOP
+
+# Part 3: 素数の数を数える
+COUNT:
+      LI    r4,1         # 2を先に数える
+      LI    r6,3         # i=3
+
+COUNTLP:
+      LD    r5,0(r6)     # s[i]
+      BZ    r5,COUNTSKIP:
+      NOP
+      NOP
+      NOP
+
+      ADD   r4,r4,r2     # s[i] == 1 なら素数数++
+
+COUNTSKIP:
+      ADD   r6,r6,r2
+      ADD   r6,r6,r2     # i += 2
+      SGT   r5,r6,r0
+      BZ    r5,COUNTLP:
+      NOP
+      NOP
+      NOP
+
 HLT:  B     HLT:
       NOP
       NOP
