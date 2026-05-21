@@ -1,65 +1,53 @@
       LI    r0,100      # n
-
       LI    r1,2        # i = 2
-
       LI    r2,1        # 1
-
       LI    r3,4        # 4
-
 # Part 1: s[2]〜s[101] を1で初期化
 
 LP1:  ST    0(r1), r2
-
       ST    1(r1), r2
-
       ST    2(r1), r2
-
       ST    3(r1), r2
-
       ADD   r1, r1, r3
-
       SGT   r5, r1, r0
-
       BZ    r5, LP1:
-
+      NOP
+      NOP
+      NOP
 # Part 2: 奇数kだけ調べる
-
       LI    r4,1        # 素数の数 2を先に数える
-
       LI    r6,3        # k = 3
-
       LI    r7,0        # 0
-
 DOWH:
 
-      MLT   r1, r6, r6  # j = k*k
-
+      MLT   r1, r6, r6  # i = k*k
       SGT   r5, r1, r0  # k*k > n ?
-
       BNZ   r5, HLT:    # 超えたら終了
-
+      NOP
+      NOP
+      NOP
       LD    r5,0(r6)    # s[k]
-
       BZ    r5,ENDIF:   # s[k] == 0なら飛ばす
-
+      NOP
+      NOP
+      NOP
       ADD   r4,r4,r2    # 素数数++
-
 LP2:  ST    0(r1),r7    # s[j] = 0
-
       ADD   r5,r6,r6    # r5 = 2k
-
-      ADD   r1,r1,r5    # j += 2k
-
+      ADD   r1,r1,r5    # i += 2k
       SGT   r5,r1,r0
-
       BZ    r5,LP2:
-
+      NOP
+      NOP
+      NOP
 ENDIF:
-
       ADD   r6,r6,r2
-
       ADD   r6,r6,r2    # k += 2
-
       B     DOWH:
-
-HLT:  B     HLT
+      NOP
+      NOP
+      NOP
+HLT:  B     HLT:
+      NOP
+      NOP
+      NOP
